@@ -40,14 +40,15 @@ headers = {"Authorization" : "Bearer {}".format(access_token)}
 def upload_file(file_to_upload, upload_folder_id, upload_drive_id):
     para = {
         "name" : '{}'.format(file_to_upload),
-        "parents": ['{}'.format(upload_drive_id), '{}'.format(upload_folder_id)]
+        "parents": ['{}'.format(upload_folder_id)],
+        "driveId": upload_drive_id,
     }
     
     files = {
         'data' : ('metadata', json.dumps(para), 'application/json; charset=UTF-8'),
         'file' : open(file_to_upload, "rb")
     }
-    response = requests.post("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+    response = requests.post("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true",
         headers = headers,
         files=files
     )
