@@ -16,6 +16,9 @@ inputs:
   upload-folder:
     description: "Drive folder name where file is to be uploaded"
     required: True
+  upload-drive:
+    description: "Drive ID"
+    required: True
 ouputs:
   file_id:
     description: "File_id of the uploaded file on Google drive"

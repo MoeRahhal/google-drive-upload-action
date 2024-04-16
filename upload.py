@@ -14,6 +14,7 @@ client_secret = os.environ['INPUT_CLIENT_SECRET']
 
 
 upload_folder = os.environ['INPUT_UPLOAD-FOLDER']
+upload_drive = os.environ['INPUT_UPLOAD-DRIVE']
 file_to_upload = os.environ['INPUT_FILE-TO-UPLOAD']
 
 
@@ -36,10 +37,10 @@ headers = {"Authorization" : "Bearer {}".format(access_token)}
 
 
 
-def upload_file(file_to_upload, upload_folder_id):
+def upload_file(file_to_upload, upload_folder_id, upload_drive_id):
     para = {
         "name" : '{}'.format(file_to_upload),
-        "parents": ['{}'.format(upload_folder_id)]
+        "parents": ['{}'.format(upload_drive_id), '{}'.format(upload_folder_id)]
     }
     
     files = {
@@ -52,19 +53,14 @@ def upload_file(file_to_upload, upload_folder_id):
     )
     return response
 
-def getIdFromName(name):
+    
+def getFileIdsUnderFolder(folder_id, drive):
     parameters = {
-        "q" : "name : '{entity_name}'".format(entity_name = name)
-    }    
-    response = requests.get(drive_api+"/v3/files",
-        headers = headers,
-        params = parameters
-    )
-    return response
-
-def getFileIdsUnderFolder(folder_id):
-    parameters = {
-        "q" : "'{id}' in parents".format( id = folder_id)
+        "q" : "'{id}' in parents".format( id = folder_id),
+        "corpora": "drive",
+        "driveId": drive,
+        "includeItemsFromAllDrives": True,
+        "supportsAllDrives": True
     }    
     response = requests.get(drive_api+"/v3/files",
         headers = headers,
@@ -81,17 +77,14 @@ def deleteFileId(id):
 
 
 def main():
-    #get upload_folder_id
-    res = getIdFromName(upload_folder)
-    upload_folder_id = res.json()['files'][0]['id']
 
-    res = getFileIdsUnderFolder(upload_folder_id)  
+    res = getFileIdsUnderFolder(upload_folder, upload_drive)  
     for entity in res.json()['files']:
         if entity['name'] != file_to_upload:
             continue
         id = entity['id']
         deleteFileId(id)
-    res = upload_file(file_to_upload, upload_folder_id)
+    res = upload_file(file_to_upload, upload_folder, upload_drive)
     print(res)
     print(res.json())
     file_id = res.json()['id']
