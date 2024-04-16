@@ -56,7 +56,7 @@ def upload_file(file_to_upload, upload_folder_id, upload_drive_id):
     
 def getFileIdsUnderFolder(folder_id, drive):
     parameters = {
-        "q" : "'{id}' in parents".format( id = folder_id)
+        "q" : "'{id}' in parents".format( id = folder_id),
         "corpora": "drive",
         "driveId": drive,
         "includeItemsFromAllDrives": True,
