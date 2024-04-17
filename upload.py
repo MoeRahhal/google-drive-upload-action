@@ -48,7 +48,7 @@ def upload_file(file_to_upload, upload_folder_id, upload_drive_id):
         'data' : ('metadata', json.dumps(para), 'application/json; charset=UTF-8'),
         'file' : open(file_to_upload, "rb")
     }
-    response = requests.post("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true",
+    response = requests.patch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true",
         headers = headers,
         files=files
     )
@@ -79,12 +79,12 @@ def deleteFileId(id):
 
 def main():
 
-    res = getFileIdsUnderFolder(upload_folder, upload_drive)  
-    for entity in res.json()['files']:
-        if entity['name'] != file_to_upload:
-            continue
-        id = entity['id']
-        deleteFileId(id)
+    # res = getFileIdsUnderFolder(upload_folder, upload_drive)  
+    # for entity in res.json()['files']:
+    #     if entity['name'] != file_to_upload:
+    #         continue
+    #     id = entity['id']
+    #     deleteFileId(id)
     res = upload_file(file_to_upload, upload_folder, upload_drive)
     print(res)
     print(res.json())
