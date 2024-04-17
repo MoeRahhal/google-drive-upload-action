@@ -85,6 +85,7 @@ def main():
         if entity['name'] != file_to_upload:
             continue
         id = entity['id']
+    print("id")
     print(id)
     res = upload_file(id, file_to_upload, upload_folder, upload_drive)
     print(res)
