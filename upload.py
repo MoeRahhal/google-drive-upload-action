@@ -48,7 +48,7 @@ def upload_file(file_to_upload, upload_folder_id, upload_drive_id):
         'data' : ('metadata', json.dumps(para), 'application/json; charset=UTF-8'),
         'file' : open(file_to_upload, "rb")
     }
-    response = requests.patch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true",
+    response = requests.put("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true",
         headers = headers,
         files=files
     )
