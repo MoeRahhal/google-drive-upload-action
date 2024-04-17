@@ -40,7 +40,7 @@ headers = {"Authorization" : "Bearer {}".format(access_token)}
 def upload_file(id, file_to_upload, upload_folder_id, upload_drive_id):
     para = {
         "name" : '{}'.format(file_to_upload),
-        # "parents": ['{}'.format(upload_folder_id)],
+        "parents": ['{}'.format(upload_folder_id)],
         "driveId": upload_drive_id,
     }
     
