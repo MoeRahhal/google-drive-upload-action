@@ -37,7 +37,7 @@ headers = {"Authorization" : "Bearer {}".format(access_token)}
 
 
 
-def upload_file(file_to_upload, upload_folder_id, upload_drive_id):
+def upload_file(id, file_to_upload, upload_folder_id, upload_drive_id):
     para = {
         "name" : '{}'.format(file_to_upload),
         "parents": ['{}'.format(upload_folder_id)],
@@ -48,7 +48,7 @@ def upload_file(file_to_upload, upload_folder_id, upload_drive_id):
         'data' : ('metadata', json.dumps(para), 'application/json; charset=UTF-8'),
         'file' : open(file_to_upload, "rb")
     }
-    response = requests.put("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true",
+    response = requests.patch("https://www.googleapis.com/upload/drive/v3/files/{}?uploadType=multipart&supportsAllDrives=true".format(id),
         headers = headers,
         files=files
     )
@@ -79,13 +79,14 @@ def deleteFileId(id):
 
 def main():
 
-    # res = getFileIdsUnderFolder(upload_folder, upload_drive)  
-    # for entity in res.json()['files']:
-    #     if entity['name'] != file_to_upload:
-    #         continue
-    #     id = entity['id']
-    #     deleteFileId(id)
-    res = upload_file(file_to_upload, upload_folder, upload_drive)
+    res = getFileIdsUnderFolder(upload_folder, upload_drive) 
+    id = None
+    for entity in res.json()['files']:
+        if entity['name'] != file_to_upload:
+            continue
+        id = entity['id']
+        deleteFileId(id)
+    res = upload_file(id, file_to_upload, upload_folder, upload_drive)
     print(res)
     print(res.json())
     file_id = res.json()['id']
