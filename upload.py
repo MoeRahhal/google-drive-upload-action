@@ -11,7 +11,9 @@ drive_api = "https://www.googleapis.com/drive"
 refresh_token = os.environ['INPUT_REFRESH_TOKEN']
 client_id = os.environ['INPUT_CLIENT_ID']
 client_secret = os.environ['INPUT_CLIENT_SECRET']
-
+print(client_id)
+print(client_secret)
+print(refresh_token)
 
 upload_folder = os.environ['INPUT_UPLOAD-FOLDER']
 upload_drive = os.environ['INPUT_UPLOAD-DRIVE']
